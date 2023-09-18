@@ -1,9 +1,9 @@
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from TMPS_Labs.src.MainApp.mainapp import UserManagement, AdminMenu, MenuManagement
+from TMPS_Labs.src.client.admin import Admin
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-    print("try")
+if __name__ == "__main__":
+    admin = Admin()
+    user_management = UserManagement(admin)
+    admin_menu = AdminMenu(admin)
+    menu_management = MenuManagement(user_management, admin_menu)
+    menu_management.start_game()

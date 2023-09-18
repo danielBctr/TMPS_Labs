@@ -7,10 +7,19 @@
 ----
 
 ## Theory
-A finite automaton is like a "machine" that takes in some input (usually a string of characters), 
-and processes it step-by-step based on a set of rules. At each step, the automaton looks at the current state and the next input symbol, 
-and uses the transition function to determine the next state. 
-This continues until the end of the input is reached.
+The SOLID principles are a set of guidelines for writing clean and maintainable code:
+
+1. Single Responsibility Principle (SRP): Each class should have one responsibility, making code easier to understand and maintain.
+
+2. Open-Closed Principle (OCP): Software entities should be open for extension but closed for modification, allowing for easy updates without altering existing code.
+
+3. Liskov Substitution Principle (LSP): Derived classes should seamlessly replace base classes without changing program behavior, ensuring consistent behavior.
+
+4. Interface Segregation Principle (ISP): Create specific interfaces for classes, avoiding unnecessary method implementations and reducing coupling.
+
+5. Dependency Inversion Principle (DIP): Depend on abstractions, not concrete implementations, for flexibility and easy component substitution.
+
+6. These principles promote modular, flexible, and robust software design.
 
 ----
 ## Objectives:
