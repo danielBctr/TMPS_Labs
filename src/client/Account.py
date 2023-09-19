@@ -14,3 +14,17 @@ class Account:
 
     def check_balance(self):
         return self.balance
+
+#Liskov Substitution
+class EnhancedAccount(Account):
+    def __init__(self, initial_balance=1000):
+        super().__init__(initial_balance)
+        self.transactions = []
+
+    def add_transaction(self, transaction):
+        self.transactions.append(transaction)
+
+    def view_transactions(self):
+        print("Transaction History:")
+        for transaction in self.transactions:
+            print(transaction)

@@ -1,9 +1,11 @@
 import random
 
+
 class Game:
     def __init__(self, user):
         self.user = user
         self.lost_all_money = False
+
     def play_round(self, amount):
 
         win_probability = 0.3
@@ -18,7 +20,6 @@ class Game:
         else:
             self.user.account.add_losses(-result)
             print(f"Sorry, you lost {amount}.")
-
 
         if self.user.check_balance() <= 0:
             self.lost_all_money = True

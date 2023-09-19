@@ -1,24 +1,59 @@
+from abc import ABC, abstractmethod
 from TMPS_Labs.src.game.game import Game
 
 
-class UserManagement:
+class IUserRepository(ABC):
+    @abstractmethod
+    def find_user(self, username):
+        pass
+
+    @abstractmethod
+    def create_user(self, username):
+        pass
+
+
+class IGameController(ABC):
+    @abstractmethod
+    def start_game(self, username):
+        pass
+
+
+class IMenuController(ABC):
+    @abstractmethod
+    def menu(self):
+        pass
+
+
+# Implement the abstractions with concrete classes
+class UserRepository(IUserRepository):
     def __init__(self, admin):
         self.admin = admin
 
-    def start_user_game(self, username):
-        user = self.admin.find_user(username)
+    def find_user(self, username):
+        return self.admin.find_user(username)
+
+    def create_user(self, username):
+        return self.admin.create_user(username)
+
+
+class UserGameController(IGameController):
+    def __init__(self, user_repository):
+        self.user_repository = user_repository
+
+    def start_game(self, username):
+        user = self.user_repository.find_user(username)
         if user is None:
             print("User not found. Creating a new user...")
-            user = self.admin.create_user(username)
+            user = self.user_repository.create_user(username)
         game = Game(user)
         game.play_game()
 
 
-class AdminMenu:
+class AdminMenuController(IMenuController):
     def __init__(self, admin):
         self.admin = admin
 
-    def admin_menu(self):
+    def menu(self):
         while True:
             print("\nAdmin Menu:")
             print("1. Create User")
@@ -42,12 +77,12 @@ class AdminMenu:
                 print("Invalid choice. Please select a valid option.")
 
 
-class MenuManagement:
-    def __init__(self, user_management, admin_menu):
-        self.user_management = user_management
-        self.admin_menu = admin_menu
+class MainMenuController(IMenuController):
+    def __init__(self, user_game_controller, admin_menu_controller):
+        self.user_game_controller = user_game_controller
+        self.admin_menu_controller = admin_menu_controller
 
-    def start_game(self):
+    def menu(self):
         while True:
             print("\nChoose an option:")
             print("1. Play as User")
@@ -58,10 +93,10 @@ class MenuManagement:
 
             if choice == "1":
                 username = input("Enter your username: ")
-                self.user_management.start_user_game(username)
+                self.user_game_controller.start_game(username)
 
             elif choice == "2":
-                self.admin_menu.admin_menu()
+                self.admin_menu_controller.menu()
 
             elif choice == "3":
                 print("Goodbye!")

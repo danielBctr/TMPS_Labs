@@ -1,9 +1,11 @@
-from TMPS_Labs.src.MainApp.mainapp import UserManagement, AdminMenu, MenuManagement
+from TMPS_Labs.src.MainApp.mainapp import UserRepository, AdminMenuController, UserGameController, MainMenuController
 from TMPS_Labs.src.client.admin import Admin
 
 if __name__ == "__main__":
     admin = Admin()
-    user_management = UserManagement(admin)
-    admin_menu = AdminMenu(admin)
-    menu_management = MenuManagement(user_management, admin_menu)
-    menu_management.start_game()
+    user_repository = UserRepository(admin)
+    user_game_controller = UserGameController(user_repository)
+    admin_menu_controller = AdminMenuController(admin)
+    main_menu_controller = MainMenuController(user_game_controller, admin_menu_controller)
+
+    main_menu_controller.menu()
