@@ -1,10 +1,20 @@
 import random
 
 
-class Game:
-    def __init__(self, user):
+class IGame:
+    def play_round(self, amount):
+        pass
+
+    def play_game(self):
+        pass
+
+class Game(IGame):
+    def __init__(self, user, max_rounds=10, win_probability=0.3, honest_game=True):
         self.user = user
         self.lost_all_money = False
+        self.max_rounds = max_rounds
+        self.win_probability = win_probability
+        self.honest_game = honest_game
 
     def play_round(self, amount):
 
@@ -65,3 +75,36 @@ class Game:
 
             else:
                 print("Invalid choice. Please select a valid option.")
+class GameBuilder:
+    def __init__(self, user):
+        self.user = user
+        self.max_rounds = 10
+        self.win_probability = 0.3
+        self.honest_game = True
+
+    def with_max_rounds(self, max_rounds):
+        self.max_rounds = max_rounds
+        return self
+
+    def with_win_probability(self, win_probability):
+        self.win_probability = win_probability
+        return self
+
+    def with_honest_game(self, honest_game):
+        self.honest_game = honest_game
+        return self
+
+    def build(self):
+        return Game(self.user, self.max_rounds, self.win_probability, self.honest_game)
+
+class GameProxy(IGame):
+    def __init__(self, user, max_rounds=10, win_probability=0.3, honest_game=True):
+        self.game = Game(user, max_rounds, win_probability, honest_game)
+
+    def play_round(self, amount):
+        # You can add logic here to control access or add additional functionality
+        return self.game.play_round(amount)
+
+    def play_game(self):
+        # You can add logic here to control access or add additional functionality
+        self.game.play_game()

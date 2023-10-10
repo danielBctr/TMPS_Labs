@@ -1,7 +1,19 @@
 from abc import ABC, abstractmethod
 from TMPS_Labs.src.game.game import Game
 
+class SingletonMeta(type):
+    _instances = {}
 
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+class IGame(ABC):
+    @abstractmethod
+    def play_game(self):
+        pass
 class IUserRepository(ABC):
     @abstractmethod
     def find_user(self, username):
@@ -25,7 +37,7 @@ class IMenuController(ABC):
 
 
 # Implement the abstractions with concrete classes
-class UserRepository(IUserRepository):
+class UserRepository(metaclass=SingletonMeta):
     def __init__(self, admin):
         self.admin = admin
 
@@ -49,7 +61,7 @@ class UserGameController(IGameController):
         game.play_game()
 
 
-class AdminMenuController(IMenuController):
+class AdminMenuController(metaclass=SingletonMeta):
     def __init__(self, admin):
         self.admin = admin
 
@@ -75,7 +87,6 @@ class AdminMenuController(IMenuController):
 
             else:
                 print("Invalid choice. Please select a valid option.")
-
 
 class MainMenuController(IMenuController):
     def __init__(self, user_game_controller, admin_menu_controller):
@@ -104,3 +115,9 @@ class MainMenuController(IMenuController):
 
             else:
                 print("Invalid choice. Please select a valid option.")
+class GameControllerAdapter(IGameController):
+    def __init__(self, game):
+        self.game = game
+
+    def start_game(self, username):
+        self.game.play_game()

@@ -1,11 +1,16 @@
 from TMPS_Labs.src.client.Account import Account
 
+class UserFactory:
+    @staticmethod
+    def create_user(username, balance, luck, gender):
+        return User(username, balance, luck, gender)
 
 class User:
-    def __init__(self, username, balance):
+    def __init__(self, username, balance, luck, gender):
         self.username = username
         self.account = Account(balance)
-
+        self.luck = luck
+        self.gender = gender
 
 
     def play(self, game, amount):
@@ -24,5 +29,5 @@ class User:
         print(f"Total Winnings: {self.account.winnings}")
         print(f"Total Losses: {self.account.losses}")
 
-
-
+    def clone(self):
+        return User(self.username, self.account.balance, self.luck, self.gender)
